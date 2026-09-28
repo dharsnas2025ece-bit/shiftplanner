@@ -1,0 +1,3290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shift Planner</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #1e293b;
+        }
+
+        /* =========================
+           LOGIN / REGISTER
+        ========================= */
+
+        #authScreen {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background:
+                    linear-gradient(
+                            135deg,
+                            #111827,
+                            #172554,
+                            #312e81
+                    );
+        }
+
+        .auth-box {
+            width: 410px;
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.25);
+        }
+
+        .auth-logo {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 15px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 15px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #38bdf8,
+                            #6366f1
+                    );
+
+            color: white;
+            font-size: 25px;
+        }
+
+        .auth-box h1 {
+            text-align: center;
+            color: #172554;
+            margin-bottom: 5px;
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .auth-box h2 {
+            margin-bottom: 18px;
+            color: #0f172a;
+        }
+
+        .auth-box label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin: 13px 0 6px;
+            color: #334155;
+        }
+
+        .auth-box input,
+        .auth-box select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dbe2ea;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .auth-box input:focus,
+        .auth-box select:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        .auth-btn {
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px;
+
+            border: none;
+            border-radius: 8px;
+
+            color: white;
+            background:
+                    linear-gradient(
+                            135deg,
+                            #2563eb,
+                            #4f46e5
+                    );
+
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .auth-btn:hover {
+            opacity: .9;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 18px;
+            font-size: 13px;
+        }
+
+        .auth-switch a {
+            color: #4f46e5;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        #authMessage {
+            margin-top: 12px;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        #registerBox {
+            display: none;
+        }
+
+        /* =========================
+           APPLICATION
+        ========================= */
+
+        #app {
+            display: none;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+
+            width: 255px;
+            height: 100vh;
+
+            background:
+                    linear-gradient(
+                            180deg,
+                            #111827 0%,
+                            #172554 55%,
+                            #1e1b4b 100%
+                    );
+
+            color: white;
+            padding: 25px 18px;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px 25px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #38bdf8,
+                            #6366f1
+                    );
+
+            font-size: 21px;
+        }
+
+        .brand h2 {
+            font-size: 20px;
+        }
+
+        .brand span {
+            display: block;
+            color: #94a3b8;
+            font-size: 11px;
+            margin-top: 3px;
+        }
+
+        .nav-title {
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 15px 12px 8px;
+        }
+
+        .nav-btn {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+
+            gap: 13px;
+
+            border: none;
+            background: transparent;
+
+            color: #cbd5e1;
+
+            padding: 13px 14px;
+
+            border-radius: 10px;
+
+            margin-bottom: 5px;
+
+            cursor: pointer;
+
+            font-size: 14px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,.08);
+            color: white;
+        }
+
+        .nav-btn.active {
+            background:
+                    linear-gradient(
+                            90deg,
+                            #2563eb,
+                            #4f46e5
+                    );
+
+            color: white;
+        }
+
+        .nav-icon {
+            font-size: 18px;
+            width: 23px;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            bottom: 20px;
+            left: 18px;
+            right: 18px;
+
+            background: rgba(255,255,255,.06);
+            border-radius: 12px;
+            padding: 14px;
+        }
+
+        .sidebar-bottom small {
+            color: #94a3b8;
+        }
+
+        .online {
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            width: 100%;
+            margin-top: 12px;
+            padding: 9px;
+
+            border: 1px solid #475569;
+            border-radius: 7px;
+
+            background: transparent;
+            color: #cbd5e1;
+
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 255px;
+            padding: 28px 35px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            font-size: 27px;
+            color: #0f172a;
+        }
+
+        .page-title p {
+            color: #64748b;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .role-badge {
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 50%;
+
+            color: white;
+            font-weight: bold;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #6366f1,
+                            #8b5cf6
+                    );
+        }
+
+        /* =========================
+           PAGES
+        ========================= */
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .welcome {
+            background:
+                    linear-gradient(
+                            135deg,
+                            #1d4ed8,
+                            #4338ca,
+                            #6d28d9
+                    );
+
+            color: white;
+
+            border-radius: 18px;
+
+            padding: 28px 32px;
+
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            color: white;
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #dbeafe;
+            font-size: 14px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow:
+                    0 5px 20px rgba(15,23,42,.06);
+        }
+
+        .stat-info p {
+            color: #64748b;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .stat-info h3 {
+            font-size: 27px;
+            color: #0f172a;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 13px;
+            font-size: 21px;
+        }
+
+        .blue {
+            background: #dbeafe;
+        }
+
+        .purple {
+            background: #ede9fe;
+        }
+
+        .green {
+            background: #dcfce7;
+        }
+
+        .orange {
+            background: #ffedd5;
+        }
+
+        /* =========================
+           PANELS
+        ========================= */
+
+        .panel {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+
+            box-shadow:
+                    0 5px 20px rgba(15,23,42,.06);
+
+            margin-bottom: 22px;
+        }
+
+        .panel h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        /* =========================
+           FORMS
+        ========================= */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 17px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 11px;
+            border: 1px solid #dbe2ea;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 17px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+        }
+
+        .btn-danger {
+            background: #ef4444;
+        }
+
+        .btn-success {
+            background: #16a34a;
+        }
+
+        .btn-warning {
+            background: #f59e0b;
+        }
+
+        .btn-small {
+            padding: 7px 10px;
+            font-size: 11px;
+            margin: 2px;
+        }
+
+        /* =========================
+           TABLE
+        ========================= */
+
+        .table-box {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+
+            box-shadow:
+                    0 5px 20px rgba(15,23,42,.06);
+
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 13px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 13px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #e0f2fe;
+            color: #0369a1;
+            font-size: 10px;
+            font-weight: bold;
+        }
+
+        .message {
+            position: fixed;
+            right: 25px;
+            bottom: 25px;
+
+            padding: 14px 20px;
+
+            background: #0f172a;
+            color: white;
+
+            border-radius: 10px;
+
+            display: none;
+            z-index: 1000;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media(max-width: 1000px) {
+
+            .stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media(max-width: 750px) {
+
+            .sidebar {
+                width: 75px;
+                padding: 15px 10px;
+            }
+
+            .brand h2,
+            .brand span,
+            .nav-title,
+            .nav-btn span,
+            .sidebar-bottom {
+                display: none;
+            }
+
+            .nav-btn {
+                justify-content: center;
+            }
+
+            .main {
+                margin-left: 75px;
+                padding: 20px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media(max-width: 550px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-box {
+                width: 90%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- =====================================================
+     LOGIN / REGISTER
+===================================================== -->
+
+<div id="authScreen">
+
+    <div class="auth-box">
+
+        <div id="loginBox">
+
+            <div class="auth-logo">⚡</div>
+
+            <h1>Shift Planner</h1>
+
+            <p class="auth-subtitle">
+                Employee Shift Management System
+            </p>
+
+            <h2>Login</h2>
+
+            <form id="loginForm">
+
+                <label>Select Role</label>
+
+                <select id="loginRole" required>
+
+                    <option value="">
+                        Select your role
+                    </option>
+
+                    <option value="admin">
+                        Admin
+                    </option>
+
+                    <option value="manager">
+                        Manager
+                    </option>
+
+                    <option value="employee">
+                        Employee
+                    </option>
+
+                </select>
+
+
+                <label>Username</label>
+
+                <input
+                        type="text"
+                        id="loginUsername"
+                        placeholder="Enter username"
+                        required
+                >
+
+
+                <label>Password</label>
+
+                <input
+                        type="password"
+                        id="loginPassword"
+                        placeholder="Enter password"
+                        required
+                >
+
+
+                <button
+                        type="submit"
+                        class="auth-btn"
+                >
+                    Login
+                </button>
+
+            </form>
+
+
+            <div class="auth-switch">
+
+                Don't have an account?
+
+                <a onclick="showRegister()">
+                    Register
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- REGISTER -->
+
+        <div id="registerBox">
+
+            <div class="auth-logo">⚡</div>
+
+            <h1>Shift Planner</h1>
+
+            <p class="auth-subtitle">
+                Create your account
+            </p>
+
+            <h2>Register</h2>
+
+
+            <form id="registerForm">
+
+                <label>Name</label>
+
+                <input
+                        type="text"
+                        id="registerName"
+                        placeholder="Enter your name"
+                        required
+                >
+
+
+                <label>Username</label>
+
+                <input
+                        type="text"
+                        id="registerUsername"
+                        placeholder="Create username"
+                        required
+                >
+
+
+                <label>Password</label>
+
+                <input
+                        type="password"
+                        id="registerPassword"
+                        placeholder="Create password"
+                        required
+                >
+
+
+                <label>Select Role</label>
+
+                <select id="registerRole" required>
+
+                    <option value="">
+                        Select your role
+                    </option>
+
+                    <option value="admin">
+                        Admin
+                    </option>
+
+                    <option value="manager">
+                        Manager
+                    </option>
+
+                    <option value="employee">
+                        Employee
+                    </option>
+
+                </select>
+
+
+                <button
+                        type="submit"
+                        class="auth-btn"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+
+            <div class="auth-switch">
+
+                Already have an account?
+
+                <a onclick="showLogin()">
+                    Login
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <p id="authMessage"></p>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<div id="app">
+
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                ⚡
+            </div>
+
+            <div>
+
+                <h2>Shift Planner</h2>
+
+                <span>Workforce Planner</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nav-title">
+            MAIN MENU
+        </div>
+
+
+        <!-- ALL ROLES -->
+
+        <button
+                class="nav-btn active"
+                data-role="all"
+                onclick="showPage('dashboard', this)"
+        >
+
+            <span class="nav-icon">⌂</span>
+
+            <span>Dashboard</span>
+
+        </button>
+
+
+        <!-- ADMIN ONLY -->
+
+        <button
+                class="nav-btn role-admin"
+                onclick="showPage('employees', this)"
+        >
+
+            <span class="nav-icon">👥</span>
+
+            <span>Employees</span>
+
+        </button>
+
+
+        <!-- ADMIN ONLY -->
+
+        <button
+                class="nav-btn role-admin"
+                onclick="showPage('shifts', this)"
+        >
+
+            <span class="nav-icon">◷</span>
+
+            <span>Shifts</span>
+
+        </button>
+
+
+        <!-- MANAGER + ADMIN -->
+
+        <button
+                class="nav-btn role-admin role-manager"
+                onclick="showPage('roster', this)"
+        >
+
+            <span class="nav-icon">▦</span>
+
+            <span>Weekly Roster</span>
+
+        </button>
+
+
+        <!-- EMPLOYEE + MANAGER + ADMIN -->
+
+        <button
+                class="nav-btn"
+                onclick="showPage('swaps', this)"
+        >
+
+            <span class="nav-icon">⇄</span>
+
+            <span>Swap Requests</span>
+
+        </button>
+
+
+        <div class="sidebar-bottom">
+
+            <small>Logged in as</small>
+
+            <div class="online" id="sideUser">
+                User
+            </div>
+
+            <button
+                    class="logout-btn"
+                    onclick="logout()"
+            >
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- MAIN -->
+
+    <div class="main">
+
+
+        <div class="topbar">
+
+            <div class="page-title">
+
+                <h1 id="pageHeading">
+                    Dashboard
+                </h1>
+
+                <p>
+                    Manage your team's schedule efficiently
+                </p>
+
+            </div>
+
+
+            <div class="profile">
+
+                <div
+                        class="role-badge"
+                        id="topRole"
+                >
+                    Employee
+                </div>
+
+                <div
+                        class="avatar"
+                        id="topAvatar"
+                >
+                    U
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div
+                id="message"
+                class="message"
+        ></div>
+
+
+        <!-- =================================================
+             DASHBOARD
+        ================================================= -->
+
+        <section
+                id="dashboard"
+                class="page active"
+        >
+
+            <div class="welcome">
+
+                <h2 id="welcomeText">
+                    Welcome! 👋
+                </h2>
+
+                <p>
+                    Welcome to Shift Planner.
+                    Manage employees, shifts,
+                    rosters and swap requests
+                    from one simple dashboard.
+                </p>
+
+            </div>
+
+
+            <div class="stats">
+
+
+                <div class="stat-card">
+
+                    <div class="stat-info">
+
+                        <p>Total Employees</p>
+
+                        <h3 id="employeeCount">
+                            0
+                        </h3>
+
+                    </div>
+
+                    <div class="stat-icon blue">
+                        👥
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-info">
+
+                        <p>Total Shifts</p>
+
+                        <h3 id="shiftCount">
+                            0
+                        </h3>
+
+                    </div>
+
+                    <div class="stat-icon purple">
+                        ◷
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-info">
+
+                        <p>Roster Entries</p>
+
+                        <h3 id="rosterCount">
+                            0
+                        </h3>
+
+                    </div>
+
+                    <div class="stat-icon green">
+                        📅
+                    </div>
+
+                </div>
+
+
+                <div class="stat-card">
+
+                    <div class="stat-info">
+
+                        <p>Swap Requests</p>
+
+                        <h3 id="swapCount">
+                            0
+                        </h3>
+
+                    </div>
+
+                    <div class="stat-icon orange">
+                        ⇄
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="panel">
+
+                <h2>
+                    Your Access
+                </h2>
+
+                <p id="accessDescription">
+                    Loading...
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             EMPLOYEES - ADMIN
+        ================================================= -->
+
+        <section
+                id="employees"
+                class="page"
+        >
+
+            <div class="panel">
+
+                <h2>
+                    Add Employee
+                </h2>
+
+                <form id="employeeForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>Name</label>
+
+                            <input
+                                    type="text"
+                                    id="employeeName"
+                                    required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Email</label>
+
+                            <input
+                                    type="email"
+                                    id="employeeEmail"
+                                    required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Role</label>
+
+                            <input
+                                    type="text"
+                                    id="employeeRole"
+                                    placeholder="Developer / Designer / etc."
+                                    required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+
+                    <button
+                            class="btn btn-primary"
+                            type="submit"
+                    >
+                        Add Employee
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <h2>Employees</h2>
+
+                <br>
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="employeeTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SHIFTS - ADMIN
+        ================================================= -->
+
+        <section
+                id="shifts"
+                class="page"
+        >
+
+            <div class="panel">
+
+                <h2>
+                    Create Shift
+                </h2>
+
+                <form id="shiftForm">
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>Shift Name</label>
+
+                            <input
+                                    type="text"
+                                    id="shiftName"
+                                    placeholder="Morning Shift"
+                                    required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Date</label>
+
+                            <input
+                                    type="date"
+                                    id="shiftDate"
+                                    required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Start Time</label>
+
+                            <input
+                                    type="time"
+                                    id="startTime"
+                                    required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>End Time</label>
+
+                            <input
+                                    type="time"
+                                    id="endTime"
+                                    required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                    <br>
+
+                    <button
+                            class="btn btn-primary"
+                            type="submit"
+                    >
+                        Create Shift
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <h2>Available Shifts</h2>
+
+                <br>
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="shiftTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ROSTER - ADMIN + MANAGER
+        ================================================= -->
+
+        <section
+                id="roster"
+                class="page"
+        >
+
+            <div class="panel">
+
+                <h2>
+                    Assign Employee to Shift
+                </h2>
+
+                <form id="rosterForm">
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+
+                            <label>Employee</label>
+
+                            <select
+                                    id="rosterEmployee"
+                                    required
+                            >
+
+                                <option value="">
+                                    Select Employee
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Shift</label>
+
+                            <select
+                                    id="rosterShift"
+                                    required
+                            >
+
+                                <option value="">
+                                    Select Shift
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <br>
+
+                    <button
+                            class="btn btn-primary"
+                            type="submit"
+                    >
+                        Assign Shift
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <h2>Weekly Roster</h2>
+
+                <br>
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Employee</th>
+                        <th>Shift</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="rosterTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SWAP REQUESTS
+        ================================================= -->
+
+        <section
+                id="swaps"
+                class="page"
+        >
+
+            <div class="panel">
+
+                <h2>
+                    Create Swap Request
+                </h2>
+
+                <form id="swapForm">
+
+                    <div class="form-grid">
+
+
+                        <div class="form-group">
+
+                            <label>Requester</label>
+
+                            <select
+                                    id="swapRequester"
+                                    required
+                            >
+
+                                <option value="">
+                                    Select Employee
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Colleague</label>
+
+                            <select
+                                    id="swapColleague"
+                                    required
+                            >
+
+                                <option value="">
+                                    Select Colleague
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Requester Shift</label>
+
+                            <select
+                                    id="requesterShift"
+                                    required
+                            >
+
+                                <option value="">
+                                    Select Shift
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>Colleague Shift</label>
+
+                            <select
+                                    id="colleagueShift"
+                                    required
+                            >
+
+                                <option value="">
+                                    Select Shift
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <br>
+
+                    <button
+                            class="btn btn-primary"
+                            type="submit"
+                    >
+                        Request Swap
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <div class="table-box">
+
+                <h2>
+                    Swap Requests
+                </h2>
+
+                <br>
+
+                <table>
+
+                    <thead>
+
+                    <tr>
+
+                        <th>ID</th>
+                        <th>Requester</th>
+                        <th>Colleague</th>
+                        <th>Requester Shift</th>
+                        <th>Colleague Shift</th>
+                        <th>Colleague Status</th>
+                        <th>Manager Status</th>
+                        <th>Action</th>
+
+                    </tr>
+
+                    </thead>
+
+                    <tbody id="swapTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       LOGIN / REGISTER
+    ===================================================== */
+
+
+    /*
+       Demo accounts are created automatically.
+    */
+
+    if (!localStorage.getItem("shiftPlannerAccounts")) {
+
+        const defaultAccounts = [
+
+            {
+                name: "System Admin",
+                username: "admin",
+                password: "admin123",
+                role: "admin"
+            },
+
+            {
+                name: "Main Manager",
+                username: "manager",
+                password: "manager123",
+                role: "manager"
+            },
+
+            {
+                name: "Employee",
+                username: "employee",
+                password: "employee123",
+                role: "employee"
+            }
+
+        ];
+
+        localStorage.setItem(
+            "shiftPlannerAccounts",
+            JSON.stringify(defaultAccounts)
+        );
+
+    }
+
+
+    function getAccounts() {
+
+        return JSON.parse(
+            localStorage.getItem("shiftPlannerAccounts")
+        ) || [];
+
+    }
+
+
+    function showRegister() {
+
+        document.getElementById("loginBox").style.display = "none";
+
+        document.getElementById("registerBox").style.display = "block";
+
+        document.getElementById("authMessage").textContent = "";
+
+    }
+
+
+    function showLogin() {
+
+        document.getElementById("registerBox").style.display = "none";
+
+        document.getElementById("loginBox").style.display = "block";
+
+        document.getElementById("authMessage").textContent = "";
+
+    }
+
+
+    /* REGISTER */
+
+    document
+        .getElementById("registerForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const name =
+                document.getElementById("registerName").value.trim();
+
+            const username =
+                document.getElementById("registerUsername").value.trim();
+
+            const password =
+                document.getElementById("registerPassword").value;
+
+            const role =
+                document.getElementById("registerRole").value;
+
+            const message =
+                document.getElementById("authMessage");
+
+
+            if (!name || !username || !password || !role) {
+
+                message.textContent =
+                    "Please fill all fields.";
+
+                message.style.color = "#dc2626";
+
+                return;
+            }
+
+
+            const accounts = getAccounts();
+
+
+            const exists =
+                accounts.some(
+                    account =>
+                        account.username.toLowerCase() ===
+                        username.toLowerCase()
+                );
+
+
+            if (exists) {
+
+                message.textContent =
+                    "Username already exists.";
+
+                message.style.color = "#dc2626";
+
+                return;
+            }
+
+
+            accounts.push({
+
+                name: name,
+                username: username,
+                password: password,
+                role: role
+
+            });
+
+
+            localStorage.setItem(
+                "shiftPlannerAccounts",
+                JSON.stringify(accounts)
+            );
+
+
+            message.textContent =
+                "Account created successfully. Please login.";
+
+            message.style.color = "#16a34a";
+
+
+            document.getElementById("registerForm").reset();
+
+        });
+
+
+    /* LOGIN */
+
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const role =
+                document.getElementById("loginRole").value;
+
+            const username =
+                document.getElementById("loginUsername").value.trim();
+
+            const password =
+                document.getElementById("loginPassword").value;
+
+
+            const message =
+                document.getElementById("authMessage");
+
+
+            const accounts = getAccounts();
+
+
+            const account =
+                accounts.find(
+                    item =>
+                        item.username === username &&
+                        item.password === password &&
+                        item.role === role
+                );
+
+
+            if (!account) {
+
+                message.textContent =
+                    "Invalid username, password or role.";
+
+                message.style.color = "#dc2626";
+
+                return;
+            }
+
+
+            localStorage.setItem(
+                "loggedInUser",
+                JSON.stringify(account)
+            );
+
+
+            openApplication(account);
+
+        });
+
+
+    /* =====================================================
+       OPEN APPLICATION
+    ===================================================== */
+
+    function openApplication(account) {
+
+        document.getElementById("authScreen").style.display = "none";
+
+        document.getElementById("app").style.display = "block";
+
+
+        document.getElementById("sideUser").textContent =
+            account.name + " (" + capitalize(account.role) + ")";
+
+
+        document.getElementById("topRole").textContent =
+            capitalize(account.role);
+
+
+        document.getElementById("topAvatar").textContent =
+            account.name.charAt(0).toUpperCase();
+
+
+        document.getElementById("welcomeText").textContent =
+            "Welcome, " + account.name + "! 👋";
+
+
+        setRoleAccess(account.role);
+
+        loadEverything();
+
+    }
+
+
+    /* =====================================================
+       ROLE ACCESS
+    ===================================================== */
+
+    function setRoleAccess(role) {
+
+
+        /*
+           ADMIN
+           -----
+           Dashboard
+           Employees
+           Shifts
+           Weekly Roster
+           Swap Requests
+        */
+
+        if (role === "admin") {
+
+            document
+                .querySelectorAll(".role-admin")
+                .forEach(button => {
+
+                    button.style.display = "flex";
+
+                });
+
+
+            document
+                .querySelectorAll(".role-manager")
+                .forEach(button => {
+
+                    button.style.display = "flex";
+
+                });
+
+
+            document.getElementById("accessDescription").textContent =
+                "Admin can manage employees, shifts, weekly roster and swap requests.";
+
+        }
+
+
+        /*
+           MANAGER
+           -------
+           Dashboard
+           Weekly Roster
+           Swap Requests
+        */
+
+        else if (role === "manager") {
+
+            document
+                .querySelectorAll(".role-admin")
+                .forEach(button => {
+
+                    button.style.display = "none";
+
+                });
+
+
+            document
+                .querySelectorAll(".role-manager")
+                .forEach(button => {
+
+                    button.style.display = "flex";
+
+                });
+
+
+            document.getElementById("accessDescription").textContent =
+                "Manager can manage the weekly roster and approve or reject swap requests.";
+
+        }
+
+
+        /*
+           EMPLOYEE
+           --------
+           Dashboard
+           Swap Requests
+        */
+
+        else {
+
+            document
+                .querySelectorAll(".role-admin")
+                .forEach(button => {
+
+                    button.style.display = "none";
+
+                });
+
+
+            document
+                .querySelectorAll(".role-manager")
+                .forEach(button => {
+
+                    button.style.display = "none";
+
+                });
+
+
+            document.getElementById("accessDescription").textContent =
+                "Employee can view the dashboard and manage shift swap requests.";
+
+        }
+
+    }
+
+
+    /* =====================================================
+       LOGOUT
+    ===================================================== */
+
+    function logout() {
+
+        localStorage.removeItem("loggedInUser");
+
+        location.reload();
+
+    }
+
+
+    /* =====================================================
+       CAPITALIZE
+    ===================================================== */
+
+    function capitalize(text) {
+
+        return text.charAt(0).toUpperCase() +
+            text.slice(1);
+
+    }
+
+
+    /* =====================================================
+       PAGE NAVIGATION
+    ===================================================== */
+
+    function showPage(pageId, button) {
+
+
+        /*
+           Extra protection:
+           Do not allow users to open
+           unauthorized pages manually.
+        */
+
+        const user =
+            JSON.parse(
+                localStorage.getItem("loggedInUser")
+            );
+
+
+        if (!user) {
+
+            return;
+
+        }
+
+
+        if (
+            pageId === "employees" &&
+            user.role !== "admin"
+        ) {
+
+            showMessage("Only Admin can access Employees.");
+
+            return;
+
+        }
+
+
+        if (
+            pageId === "shifts" &&
+            user.role !== "admin"
+        ) {
+
+            showMessage("Only Admin can access Shifts.");
+
+            return;
+
+        }
+
+
+        if (
+            pageId === "roster" &&
+            user.role !== "admin" &&
+            user.role !== "manager"
+        ) {
+
+            showMessage(
+                "Employee does not have roster management access."
+            );
+
+            return;
+
+        }
+
+
+        document
+            .querySelectorAll(".page")
+            .forEach(page => {
+
+                page.classList.remove("active");
+
+            });
+
+
+        const page =
+            document.getElementById(pageId);
+
+
+        if (page) {
+
+            page.classList.add("active");
+
+        }
+
+
+        document
+            .querySelectorAll(".nav-btn")
+            .forEach(btn => {
+
+                btn.classList.remove("active");
+
+            });
+
+
+        if (button) {
+
+            button.classList.add("active");
+
+        }
+
+
+        const headings = {
+
+            dashboard: "Dashboard",
+
+            employees: "Employees",
+
+            shifts: "Shifts",
+
+            roster: "Weekly Roster",
+
+            swaps: "Swap Requests"
+
+        };
+
+
+        document.getElementById("pageHeading").textContent =
+            headings[pageId] || "Shift Planner";
+
+    }
+
+
+    /* =====================================================
+       MESSAGE
+    ===================================================== */
+
+    function showMessage(text) {
+
+        const message =
+            document.getElementById("message");
+
+
+        message.textContent = text;
+
+        message.style.display = "block";
+
+
+        setTimeout(function() {
+
+            message.style.display = "none";
+
+        }, 3000);
+
+    }
+
+
+    /* =====================================================
+       EMPLOYEES
+    ===================================================== */
+
+    async function loadEmployees() {
+
+        try {
+
+            const response =
+                await fetch("/api/employees");
+
+
+            const employees =
+                await response.json();
+
+
+            document.getElementById("employeeCount").textContent =
+                employees.length;
+
+
+            const table =
+                document.getElementById("employeeTable");
+
+
+            table.innerHTML = "";
+
+
+            employees.forEach(employee => {
+
+                table.innerHTML += `
+
+                <tr>
+
+                    <td>${employee.id}</td>
+
+                    <td>${employee.name}</td>
+
+                    <td>${employee.email}</td>
+
+                    <td>${employee.role}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteEmployee(${employee.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            });
+
+
+            fillEmployeeDropdowns(employees);
+
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+
+    function fillEmployeeDropdowns(employees) {
+
+        const dropdowns = [
+
+            document.getElementById("rosterEmployee"),
+
+            document.getElementById("swapRequester"),
+
+            document.getElementById("swapColleague")
+
+        ];
+
+
+        dropdowns.forEach(dropdown => {
+
+            if (!dropdown) return;
+
+
+            dropdown.innerHTML =
+                '<option value="">Select Employee</option>';
+
+
+            employees.forEach(employee => {
+
+                dropdown.innerHTML += `
+
+                <option value="${employee.id}">
+                    ${employee.name}
+                </option>
+
+            `;
+
+            });
+
+        });
+
+    }
+
+
+    document
+        .getElementById("employeeForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const employee = {
+
+                name:
+                document.getElementById("employeeName").value,
+
+                email:
+                document.getElementById("employeeEmail").value,
+
+                role:
+                document.getElementById("employeeRole").value
+
+            };
+
+
+            const response =
+                await fetch(
+                    "/api/employees",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(employee)
+
+                    }
+                );
+
+
+            if (response.ok) {
+
+                showMessage("Employee added successfully.");
+
+                this.reset();
+
+                loadEmployees();
+
+            } else {
+
+                showMessage("Unable to add employee.");
+
+            }
+
+        });
+
+
+    async function deleteEmployee(id) {
+
+        if (!confirm("Delete this employee?")) {
+
+            return;
+
+        }
+
+
+        const response =
+            await fetch(
+                `/api/employees/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (response.ok) {
+
+            showMessage("Employee deleted.");
+
+            loadEmployees();
+
+        } else {
+
+            showMessage("Unable to delete employee.");
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SHIFTS
+    ===================================================== */
+
+    async function loadShifts() {
+
+        try {
+
+            const response =
+                await fetch("/api/shifts");
+
+
+            const shifts =
+                await response.json();
+
+
+            document.getElementById("shiftCount").textContent =
+                shifts.length;
+
+
+            const table =
+                document.getElementById("shiftTable");
+
+
+            table.innerHTML = "";
+
+
+            shifts.forEach(shift => {
+
+                table.innerHTML += `
+
+                <tr>
+
+                    <td>${shift.id}</td>
+
+                    <td>${shift.shiftName}</td>
+
+                    <td>${shift.shiftDate}</td>
+
+                    <td>${shift.startTime}</td>
+
+                    <td>${shift.endTime}</td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteShift(${shift.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            });
+
+
+            fillShiftDropdowns(shifts);
+
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+
+    function fillShiftDropdowns(shifts) {
+
+        const dropdowns = [
+
+            document.getElementById("rosterShift"),
+
+            document.getElementById("requesterShift"),
+
+            document.getElementById("colleagueShift")
+
+        ];
+
+
+        dropdowns.forEach(dropdown => {
+
+            if (!dropdown) return;
+
+
+            dropdown.innerHTML =
+                '<option value="">Select Shift</option>';
+
+
+            shifts.forEach(shift => {
+
+                dropdown.innerHTML += `
+
+                <option value="${shift.id}">
+
+                    ${shift.shiftName}
+                    -
+                    ${shift.shiftDate}
+
+                </option>
+
+            `;
+
+            });
+
+        });
+
+    }
+
+
+    document
+        .getElementById("shiftForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const shift = {
+
+                shiftName:
+                document.getElementById("shiftName").value,
+
+                shiftDate:
+                document.getElementById("shiftDate").value,
+
+                startTime:
+                document.getElementById("startTime").value,
+
+                endTime:
+                document.getElementById("endTime").value
+
+            };
+
+
+            const response =
+                await fetch(
+                    "/api/shifts",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(shift)
+
+                    }
+                );
+
+
+            if (response.ok) {
+
+                showMessage("Shift created successfully.");
+
+                this.reset();
+
+                loadShifts();
+
+            } else {
+
+                showMessage("Unable to create shift.");
+
+            }
+
+        });
+
+
+    async function deleteShift(id) {
+
+        if (!confirm("Delete this shift?")) {
+
+            return;
+
+        }
+
+
+        const response =
+            await fetch(
+                `/api/shifts/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (response.ok) {
+
+            showMessage("Shift deleted.");
+
+            loadShifts();
+
+        } else {
+
+            showMessage("Unable to delete shift.");
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ROSTER
+    ===================================================== */
+
+    async function loadRoster() {
+
+        try {
+
+            const response =
+                await fetch("/api/rosters");
+
+
+            const rosters =
+                await response.json();
+
+
+            document.getElementById("rosterCount").textContent =
+                rosters.length;
+
+
+            const table =
+                document.getElementById("rosterTable");
+
+
+            table.innerHTML = "";
+
+
+            rosters.forEach(roster => {
+
+                const employee =
+                    roster.employee
+                        ? roster.employee.name
+                        : "-";
+
+
+                const shift =
+                    roster.shift
+                        ? roster.shift.shiftName
+                        : "-";
+
+
+                const date =
+                    roster.shift
+                        ? roster.shift.shiftDate
+                        : "-";
+
+
+                const time =
+                    roster.shift
+                        ? roster.shift.startTime +
+                        " - " +
+                        roster.shift.endTime
+                        : "-";
+
+
+                table.innerHTML += `
+
+                <tr>
+
+                    <td>${roster.id}</td>
+
+                    <td>${employee}</td>
+
+                    <td>${shift}</td>
+
+                    <td>${date}</td>
+
+                    <td>${time}</td>
+
+                    <td>
+                        <span class="status">
+                            ${roster.status}
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-danger btn-small"
+                            onclick="deleteRoster(${roster.id})"
+                        >
+                            Delete
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+            });
+
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+
+    document
+        .getElementById("rosterForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const employeeId =
+                document.getElementById("rosterEmployee").value;
+
+            const shiftId =
+                document.getElementById("rosterShift").value;
+
+
+            const roster = {
+
+                employee: {
+                    id: Number(employeeId)
+                },
+
+                shift: {
+                    id: Number(shiftId)
+                },
+
+                status: "ASSIGNED"
+
+            };
+
+
+            const response =
+                await fetch(
+                    "/api/rosters",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(roster)
+
+                    }
+                );
+
+
+            if (response.ok) {
+
+                showMessage("Employee assigned to shift.");
+
+                this.reset();
+
+                loadRoster();
+
+            } else {
+
+                const error =
+                    await response.json();
+
+                showMessage(
+                    error.error ||
+                    "Unable to create roster."
+                );
+
+            }
+
+        });
+
+
+    async function deleteRoster(id) {
+
+        if (!confirm("Delete this roster entry?")) {
+
+            return;
+
+        }
+
+
+        const response =
+            await fetch(
+                `/api/rosters/${id}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+
+        if (response.ok) {
+
+            showMessage("Roster deleted.");
+
+            loadRoster();
+
+        }
+
+    }
+
+
+    /* =====================================================
+       SWAP REQUESTS
+    ===================================================== */
+
+    async function loadSwaps() {
+
+        try {
+
+            const response =
+                await fetch("/api/swap-requests");
+
+
+            const swaps =
+                await response.json();
+
+
+            document.getElementById("swapCount").textContent =
+                swaps.length;
+
+
+            const table =
+                document.getElementById("swapTable");
+
+
+            table.innerHTML = "";
+
+
+            swaps.forEach(swap => {
+
+                const requester =
+                    swap.requester
+                        ? swap.requester.name
+                        : "-";
+
+
+                const colleague =
+                    swap.colleague
+                        ? swap.colleague.name
+                        : "-";
+
+
+                const requesterShift =
+                    swap.requesterShift
+                        ? swap.requesterShift.shiftName
+                        : "-";
+
+
+                const colleagueShift =
+                    swap.colleagueShift
+                        ? swap.colleagueShift.shiftName
+                        : "-";
+
+
+                let actions = "";
+
+
+                actions += `
+
+                <button
+                    class="btn btn-success btn-small"
+                    onclick="acceptSwap(${swap.id})"
+                >
+                    Accept
+                </button>
+
+            `;
+
+
+                actions += `
+
+                <button
+                    class="btn btn-danger btn-small"
+                    onclick="rejectSwap(${swap.id})"
+                >
+                    Reject
+                </button>
+
+            `;
+
+
+                actions += `
+
+                <button
+                    class="btn btn-primary btn-small"
+                    onclick="approveSwap(${swap.id})"
+                >
+                    Manager Approve
+                </button>
+
+            `;
+
+
+                actions += `
+
+                <button
+                    class="btn btn-warning btn-small"
+                    onclick="managerReject(${swap.id})"
+                >
+                    Manager Reject
+                </button>
+
+            `;
+
+
+                table.innerHTML += `
+
+                <tr>
+
+                    <td>${swap.id}</td>
+
+                    <td>${requester}</td>
+
+                    <td>${colleague}</td>
+
+                    <td>${requesterShift}</td>
+
+                    <td>${colleagueShift}</td>
+
+                    <td>
+                        <span class="status">
+                            ${swap.colleagueStatus || "PENDING"}
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status">
+                            ${swap.managerStatus || "PENDING"}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${actions}
+                    </td>
+
+                </tr>
+
+            `;
+
+            });
+
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    }
+
+
+    /* CREATE SWAP */
+
+    document
+        .getElementById("swapForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const swapRequest = {
+
+                requester: {
+
+                    id:
+                        Number(
+                            document.getElementById(
+                                "swapRequester"
+                            ).value
+                        )
+
+                },
+
+                colleague: {
+
+                    id:
+                        Number(
+                            document.getElementById(
+                                "swapColleague"
+                            ).value
+                        )
+
+                },
+
+                requesterShift: {
+
+                    id:
+                        Number(
+                            document.getElementById(
+                                "requesterShift"
+                            ).value
+                        )
+
+                },
+
+                colleagueShift: {
+
+                    id:
+                        Number(
+                            document.getElementById(
+                                "colleagueShift"
+                            ).value
+                        )
+
+                }
+
+            };
+
+
+            const response =
+                await fetch(
+                    "/api/swap-requests",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify(swapRequest)
+
+                    }
+                );
+
+
+            if (response.ok) {
+
+                showMessage(
+                    "Swap request created."
+                );
+
+                this.reset();
+
+                loadSwaps();
+
+            } else {
+
+                const error =
+                    await response.json();
+
+                showMessage(
+                    error.error ||
+                    "Unable to create swap request."
+                );
+
+            }
+
+        });
+
+
+    /* ACCEPT */
+
+    async function acceptSwap(id) {
+
+        const response =
+            await fetch(
+                `/api/swap-requests/${id}/colleague/accept`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (response.ok) {
+
+            showMessage(
+                "Swap accepted by colleague."
+            );
+
+            loadSwaps();
+
+        } else {
+
+            const error =
+                await response.json();
+
+            showMessage(
+                error.error ||
+                "Unable to accept swap."
+            );
+
+        }
+
+    }
+
+
+    /* REJECT */
+
+    async function rejectSwap(id) {
+
+        const response =
+            await fetch(
+                `/api/swap-requests/${id}/colleague/reject`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (response.ok) {
+
+            showMessage(
+                "Swap rejected by colleague."
+            );
+
+            loadSwaps();
+
+        } else {
+
+            const error =
+                await response.json();
+
+            showMessage(
+                error.error ||
+                "Unable to reject swap."
+            );
+
+        }
+
+    }
+
+
+    /* MANAGER APPROVE */
+
+    async function approveSwap(id) {
+
+        const user =
+            JSON.parse(
+                localStorage.getItem("loggedInUser")
+            );
+
+
+        if (
+            user.role !== "manager" &&
+            user.role !== "admin"
+        ) {
+
+            showMessage(
+                "Only Manager or Admin can approve swaps."
+            );
+
+            return;
+
+        }
+
+
+        const response =
+            await fetch(
+                `/api/swap-requests/${id}/manager/approve`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (response.ok) {
+
+            showMessage(
+                "Swap approved by manager."
+            );
+
+            loadSwaps();
+
+            loadRoster();
+
+        } else {
+
+            const error =
+                await response.json();
+
+            showMessage(
+                error.error ||
+                "Unable to approve swap."
+            );
+
+        }
+
+    }
+
+
+    /* MANAGER REJECT */
+
+    async function managerReject(id) {
+
+        const user =
+            JSON.parse(
+                localStorage.getItem("loggedInUser")
+            );
+
+
+        if (
+            user.role !== "manager" &&
+            user.role !== "admin"
+        ) {
+
+            showMessage(
+                "Only Manager or Admin can reject swaps."
+            );
+
+            return;
+
+        }
+
+
+        const response =
+            await fetch(
+                `/api/swap-requests/${id}/manager/reject`,
+                {
+                    method: "PUT"
+                }
+            );
+
+
+        if (response.ok) {
+
+            showMessage(
+                "Swap rejected by manager."
+            );
+
+            loadSwaps();
+
+        } else {
+
+            const error =
+                await response.json();
+
+            showMessage(
+                error.error ||
+                "Unable to reject swap."
+            );
+
+        }
+
+    }
+
+
+    /* =====================================================
+       LOAD EVERYTHING
+    ===================================================== */
+
+    async function loadEverything() {
+
+        await loadEmployees();
+
+        await loadShifts();
+
+        await loadRoster();
+
+        await loadSwaps();
+
+    }
+
+
+    /* =====================================================
+       CHECK LOGIN WHEN PAGE OPENS
+    ===================================================== */
+
+    window.addEventListener("load", function() {
+
+        const loggedInUser =
+            JSON.parse(
+                localStorage.getItem("loggedInUser")
+            );
+
+
+        if (loggedInUser) {
+
+            openApplication(loggedInUser);
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>
